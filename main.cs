@@ -9,11 +9,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using static MP3PlayerAffectsHappiness.SharedState; 
+using static MP3PlayerAffectsHappiness.SharedState;
 using static MP3PlayerAffectsHappiness.MP3PlayerAffectsHappiness;
 using BepInEx.Logging;
 using System.Runtime.CompilerServices;
-using System.CodeDom.Compiler;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
@@ -44,7 +43,7 @@ namespace MP3PlayerAffectsHappiness
             logger.LogInfo("Awake() ran - mod loaded!");
 
             Harmony harmony = new Harmony(pluginGuid);
-            
+
             harmony.PatchAll();
 
             //var ToMainMenuOriginal = AccessTools.Method(typeof(PlayerCamera), "ToMainMenu");
@@ -96,7 +95,8 @@ namespace MP3PlayerAffectsHappiness
                     {
                         body.happiness += MP3HappinessMode * 0.005f;
                     }
-                } else
+                }
+                else
                 {
                     MP3IsPlaying = false;
                     yield break;
@@ -136,7 +136,8 @@ namespace MP3PlayerAffectsHappiness
             try
             {
                 saveInfo["MP3HappinessMode"] = MP3HappinessMode;
-            } catch
+            }
+            catch
             {
                 Log("SaveGame patch: MP3HappinessMode doesn't exist");
                 return;
@@ -162,10 +163,11 @@ namespace MP3PlayerAffectsHappiness
             {
                 return;
             }
-            try 
+            try
             {
                 jobject = JObject.Parse(SaveSystem.Unzip(File.ReadAllBytes(Application.persistentDataPath + "\\save.sv")));
-            } catch
+            }
+            catch
             {
                 Log("TryLoadGame patch: jobject SaveInfo was empty, skipping. MP3HappinessMode will be rerolled upon waking up.");
                 return;
@@ -173,7 +175,8 @@ namespace MP3PlayerAffectsHappiness
             if (jobject.ContainsKey("MP3HappinessMode"))
             {
                 MP3HappinessMode = (int)jobject["MP3HappinessMode"];
-            } else
+            }
+            else
             {
                 Log("TryLoadGame patch: jobject SaveInfo did not have MP3HappinessMode, skipping. MP3HappinessMode will be rerolled upon waking up.");
             }
